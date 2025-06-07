@@ -100,8 +100,8 @@ describe('Test database', () => {
     test('Insert a valid user', async () => {
       let result = await client.query(
         `INSERT INTO
-         users (email, username, birthdate, city)
-         VALUES ('user@example.com', 'user', '2024-01-02', 'La Plata')`
+         users (email, username, birthdate, city,  first_name, last_name, password, enabled, updated_at, last_access_time)
+         VALUES ('user@example.com', 'user', '2024-01-02', 'La Plata', 'Juan', 'Perez', 'miPassword123', true, NOW(), NOW())`
       )
 
       expect(result.rowCount).toBe(1)
@@ -119,9 +119,10 @@ describe('Test database', () => {
     })
 
     test('Insert a user with an invalid email', async () => {
-      const query = `INSERT INTO
-                     users (email, username, birthdate, city)
-                     VALUES ('user', 'user', '2024-01-02', 'La Plata')`
+      const query = `INSERT INTO users
+                     (email, username, birthdate, city, first_name, last_name, password, enabled, updated_at, last_access_time)
+                     VALUES
+                     ('user', 'user', '2024-01-02', 'La Plata', 'Juan', 'Perez', 'miPassword123', true, NOW(), NOW())`
 
       await expect(client.query(query)).rejects.toThrow('users_email_check')
     })
